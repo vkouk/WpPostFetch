@@ -1,0 +1,50 @@
+@import url('https://fonts.googleapis.com/css?family=Roboto');
+
+/** Basic CSS **/
+
+body {
+    font-family: 'Roboto', sans-serif;
+    font-weight: 300;
+    margin: 0 auto;
+    font-size: 2em;
+    position: relative;
+    background-color: lightseagreen;
+    font-size: 16px;
+    color: #ffffff;
+    padding-top: 10px;
+}
+
+h1, h2, h3, h4, h5, h6 {
+    font-family: "Open Sans", sans-serif;
+    font-weight: 100;
+    margin: 0;
+    color: #ffffff;
+}
+
+a:hover {
+    text-decoration: none;
+}
+
+/** Page CSS **/
+
+.l-post-header,
+.wp-posts {
+    text-align: center;
+    margin: 45px auto;
+}
+
+.wp-posts ul {
+    list-style-type: none;
+}
+
+.wp-posts li p {
+    padding-top: 5px;
+}
+
+.l-post {
+    margin: 0 auto;
+}
+
+.l-post input {
+    margin-right: 5px;
+}
