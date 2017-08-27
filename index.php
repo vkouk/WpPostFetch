@@ -21,12 +21,14 @@
         </div>
         <div class="row">
             <div class="col-6 l-post">
-                <div class="input-group">
-                    <span class="input-group-addon" id="basic-addon3">https://</span>
-                    <input type="text" class="form-control" id="basic-url" aria-describedby="basic-addon3">
+                <form name="form" action="" method="post">
+                    <div class="input-group">
+                        <span class="input-group-addon" id="basic-addon3">http://</span>
+                        <input type="text" class="form-control" name="basic-url" id="basic-url" aria-describedby="basic-addon3">
 
-                    <button type="button" class="btn btn-outline-light">Submit</button>
-                </div>
+                        <button type="submit" class="btn btn-outline-light">Submit</button>
+                    </div>
+                </form>
             </div>
         </div>
         <div class="row">
@@ -34,19 +36,23 @@
                 <h2>Recent posts</h2>
                 <ul>
                     <?php
-
-                        $url          =  'https://demo.wp-api.org/wp-json/';
-                        $endpoint     =  'wp/v2/posts';
-                        $wpUrl        =  $url . $endpoint;
+                        $url1         =  'http://' . $_POST['basic-url'];
+                        $url          =  'http://demo.wp-api.org';
+                        $endpoint     =  '/wp-json/wp/v2/posts';
+                        $wpUrl        =  $url1 . $endpoint;
                         $data         =  file_get_contents($wpUrl);
                         $result       =  json_decode($data, true);
-                        $post_id      =  $result[0]['id'];
-                        $post_content =  $result[0]['content']['rendered'];
+
+                        for ($i = 0; $i < count($result); $i++) {
+                            $post_content =  $result[$i]['content']['rendered'];
+                            $post_title   =  $result[$i]['title']['rendered'];
+                            $post = "<li><span>Title: $post_title</span><br> <p>Content: $post_content</p> </li>";
+                        }
 
                         if (empty($data)) {
-                            echo "<li><p>No posts found.</p></li>";
+                            echo "<li><p>No posts found from $url1 .</p></li>";
                         } else {
-                            echo '<li><p>'.print_r($result, true ).'</p></li>';
+                            echo $post;
                         }
                     ?>
                 </ul>
