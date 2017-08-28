@@ -36,17 +36,21 @@
                 <h2>Recent posts</h2>
                 <ul>
                     <?php
-                        $url1         =  'http://' . $_POST['basic-url'];
-                        $url          =  'http://demo.wp-api.org';
+                        $url          =  'http://' . $_POST['basic-url'];
+                        $url1         =  'http://demo.wp-api.org';
                         $endpoint     =  '/wp-json/wp/v2/posts';
                         $wpUrl        =  $url1 . $endpoint;
                         $data         =  file_get_contents($wpUrl);
                         $result       =  json_decode($data, true);
 
-                        for ($i = 0; $i < count($result); $i++) {
-                            $post_content =  $result[$i]['content']['rendered'];
-                            $post_title   =  $result[$i]['title']['rendered'];
-                            $post = "<li><span>Title: $post_title</span><br> <p>Content: $post_content</p> </li>";
+                        foreach ($result as $posts) {
+                            $content = $posts['content']['rendered'];
+                            $title   = $posts['title']['rendered'];
+                            echo "<li>Title: ";
+                            $post = print_r($title);
+                            echo "<p>Content: ";
+                            $post = print_r($content);
+
                         }
 
                         if (empty($data)) {

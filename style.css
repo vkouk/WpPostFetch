@@ -33,6 +33,11 @@ a:hover {
     margin: 45px auto;
 }
 
+.wp-posts h2 {
+    text-decoration: underline;
+    padding-bottom: 10px;
+}
+
 .wp-posts ul {
     list-style-type: none;
 }
