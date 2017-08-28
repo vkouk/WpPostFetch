@@ -53,7 +53,7 @@
                         }
 
                         if (empty($data)) {
-                            echo "<li><p>No posts found from $url .</p></li>";
+                            echo "<li><p>No posts found from $url</p></li>";
                         } else {
                             echo $post;
                         }
