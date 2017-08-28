@@ -21,12 +21,12 @@
         </div>
         <div class="row">
             <div class="col-6 l-post">
-                <form name="form" action="" method="post">
+                <form name="form" action="index.php" method="post">
                     <div class="input-group">
                         <span class="input-group-addon" id="basic-addon3">http://</span>
                         <input type="text" class="form-control" name="basic-url" id="basic-url" aria-describedby="basic-addon3">
 
-                        <button type="submit" class="btn btn-outline-light">Submit</button>
+                        <input type="submit" class="btn btn-outline-light" value="Submit">
                     </div>
                 </form>
             </div>
@@ -37,9 +37,8 @@
                 <ul>
                     <?php
                         $url          =  'http://' . $_POST['basic-url'];
-                        $url1         =  'http://demo.wp-api.org';
                         $endpoint     =  '/wp-json/wp/v2/posts';
-                        $wpUrl        =  $url1 . $endpoint;
+                        $wpUrl        =  $url . $endpoint;
                         $data         =  file_get_contents($wpUrl);
                         $result       =  json_decode($data, true);
 
@@ -48,13 +47,13 @@
                             $title   = $posts['title']['rendered'];
                             echo "<li>Title: ";
                             $post = print_r($title);
-                            echo "<p>Content: ";
+                            echo "<p>Content: </p>";
                             $post = print_r($content);
-
+                            echo "</li>";
                         }
 
                         if (empty($data)) {
-                            echo "<li><p>No posts found from $url1 .</p></li>";
+                            echo "<li><p>No posts found from $url .</p></li>";
                         } else {
                             echo $post;
                         }
