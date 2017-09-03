@@ -1,3 +1,25 @@
+<?php
+$url          =  'http://' . $_POST['basic-url'];
+$endpoint     =  '/wp-json/wp/v2/posts';
+$feed_endpoint = '/feed';
+$wpUrl        =  $url . $endpoint;
+$data         =  file_get_contents($wpUrl);
+$result       =  json_decode($data, true);
+$post         =  '';
+$curl         = curl_init();
+
+curl_setopt_array($curl, Array(
+    CURLOPT_URL            => $wpUrl,
+    CURLOPT_USERAGENT      => 'spider',
+    CURLOPT_TIMEOUT        => 120,
+    CURLOPT_CONNECTTIMEOUT => 30,
+    CURLOPT_RETURNTRANSFER => TRUE,
+    CURLOPT_ENCODING       => 'UTF-8'
+));
+$dataRss = curl_exec($curl);
+curl_close($curl);
+$xml = simplexml_load_string($dataRss, 'SimpleXMLElement', LIBXML_NOCDATA);
+?>
 <!doctype html>
 <html lang="en">
 <head>
@@ -36,26 +58,37 @@
                 <h2>Recent posts</h2>
                 <ul>
                     <?php
-                        $url          =  'http://' . $_POST['basic-url'];
-                        $endpoint     =  '/wp-json/wp/v2/posts';
-                        $wpUrl        =  $url . $endpoint;
-                        $data         =  file_get_contents($wpUrl);
-                        $result       =  json_decode($data, true);
+                        if (get_headers($wpUrl = $url . $endpoint)) {
+                            $wpUrl = $url . $endpoint;
+                            foreach ($result as $posts) {
+                                $content = $posts['content']['rendered'];
+                                $title   = $posts['title']['rendered'];
+                                echo "<li>Title: ";
+                                $post = print_r($title);
+                                echo "<p>Content: </p>";
+                                $post = print_r($content);
+                                echo "</li>";
+                            }
 
-                        foreach ($result as $posts) {
-                            $content = $posts['content']['rendered'];
-                            $title   = $posts['title']['rendered'];
-                            echo "<li>Title: ";
-                            $post = print_r($title);
-                            echo "<p>Content: </p>";
-                            $post = print_r($content);
-                            echo "</li>";
-                        }
-
-                        if (empty($data)) {
-                            echo "<li><p>No posts found from $url</p></li>";
-                        } else {
                             echo $post;
+                        }
+                        else if (get_headers($wpUrl = $url . $feed_endpoint)) {
+                            $wpUrl = $url . $feed_endpoint;
+
+                            foreach ($xml->channel->item as $item) {
+                                $content = $item['content']['rendered'];
+                                $title   = $item['title']['rendered'];
+                                echo "<li>Title: ";
+                                $post = print_r($title);
+                                echo "<p>Content: </p>";
+                                $post = print_r($content);
+                                echo "</li>";
+                            }
+
+                            echo $post;
+                        }
+                        else if (empty($data) || empty($dataRss)) {
+                            echo "<li><p>No posts found.</p></li>";
                         }
                     ?>
                 </ul>
