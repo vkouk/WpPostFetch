@@ -1,25 +1,3 @@
-<?php
-$url          =  'http://' . $_POST['basic-url'];
-$endpoint     =  '/wp-json/wp/v2/posts';
-$feed_endpoint = '/feed';
-$wpUrl        =  $url . $endpoint;
-$data         =  file_get_contents($wpUrl);
-$result       =  json_decode($data, true);
-$post         =  '';
-$curl         = curl_init();
-
-curl_setopt_array($curl, Array(
-    CURLOPT_URL            => $wpUrl,
-    CURLOPT_USERAGENT      => 'spider',
-    CURLOPT_TIMEOUT        => 120,
-    CURLOPT_CONNECTTIMEOUT => 30,
-    CURLOPT_RETURNTRANSFER => TRUE,
-    CURLOPT_ENCODING       => 'UTF-8'
-));
-$dataRss = curl_exec($curl);
-curl_close($curl);
-$xml = simplexml_load_string($dataRss, 'SimpleXMLElement', LIBXML_NOCDATA);
-?>
 <!doctype html>
 <html lang="en">
 <head>
@@ -58,6 +36,32 @@ $xml = simplexml_load_string($dataRss, 'SimpleXMLElement', LIBXML_NOCDATA);
                 <h2>Recent posts</h2>
                 <ul>
                     <?php
+                        $url          =  'http://' . $_POST['basic-url'];
+                        $endpoint     =  '/wp-json/wp/v2/posts';
+                        $feed_endpoint = '/feed';
+                        $wpUrl        =  $url . $feed_endpoint;
+                        $data         =  file_get_contents($wpUrl);
+                        $result       =  json_decode($data, true);
+                        $post         =  '';
+
+                        function getFeed($feed_url) {
+
+                            $content = file_get_contents($feed_url);
+                            $x = simplexml_load_string($content, null, LIBXML_NOCDATA);
+                            $y = '';
+
+                            foreach($x->channel->item as $entry) {
+
+                                echo "<li>Title: ";
+                                $y = print_r((string)$entry->title);
+                                echo "<p>Content: </p>";
+                                $y .= print_r((string)$entry->description);
+                                echo "</li></br>";
+                            }
+
+                            echo $y;
+                        }
+
                         if (get_headers($wpUrl = $url . $endpoint)) {
                             $wpUrl = $url . $endpoint;
                             foreach ($result as $posts) {
@@ -66,7 +70,7 @@ $xml = simplexml_load_string($dataRss, 'SimpleXMLElement', LIBXML_NOCDATA);
                                 echo "<li>Title: ";
                                 $post = print_r($title);
                                 echo "<p>Content: </p>";
-                                $post = print_r($content);
+                                $post .= print_r($content);
                                 echo "</li>";
                             }
 
@@ -75,19 +79,9 @@ $xml = simplexml_load_string($dataRss, 'SimpleXMLElement', LIBXML_NOCDATA);
                         else if (get_headers($wpUrl = $url . $feed_endpoint)) {
                             $wpUrl = $url . $feed_endpoint;
 
-                            foreach ($xml->channel->item as $item) {
-                                $content = $item['content']['rendered'];
-                                $title   = $item['title']['rendered'];
-                                echo "<li>Title: ";
-                                $post = print_r($title);
-                                echo "<p>Content: </p>";
-                                $post = print_r($content);
-                                echo "</li>";
-                            }
-
-                            echo $post;
+                            getFeed($wpUrl);
                         }
-                        else if (empty($data) || empty($dataRss)) {
+                        else if (empty($data)) {
                             echo "<li><p>No posts found.</p></li>";
                         }
                     ?>
