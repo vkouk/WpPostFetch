@@ -1,3 +1,4 @@
+<?php include_once 'feed.php'; ?>
 <!doctype html>
 <html lang="en">
 <head>
@@ -40,27 +41,9 @@
                         $endpoint     =  '/wp-json/wp/v2/posts';
                         $feed_endpoint = '/feed';
                         $wpUrl        =  $url . $feed_endpoint;
-                        $data         =  file_get_contents($wpUrl);
-                        $result       =  json_decode($data, true);
-                        $post         =  '';
 
-                        function getFeed($feed_url) {
-
-                            $content = file_get_contents($feed_url);
-                            $x = simplexml_load_string($content, null, LIBXML_NOCDATA);
-                            $y = '';
-
-                            foreach($x->channel->item as $entry) {
-
-                                echo "<li>Title: ";
-                                $y = print_r((string)$entry->title);
-                                echo "<p>Content: </p>";
-                                $y .= print_r((string)$entry->description);
-                                echo "</li></br>";
-                            }
-
-                            echo $y;
-                        }
+                        //Feed::getPosts('http://demo.wp-api.org/wp-json/wp/v2/posts');
+                        Feed::getRssFeed('http://demo.wp-api.org/feed');
 
                         if (get_headers($wpUrl = $url . $endpoint)) {
                             $wpUrl = $url . $endpoint;
@@ -77,13 +60,13 @@
                             echo $post;
                         }
                         else if (get_headers($wpUrl = $url . $feed_endpoint)) {
-                            $wpUrl = $url . $feed_endpoint;
-
-                            getFeed($wpUrl);
+                            Feed::getRssFeed($wpUrl);
                         }
                         else if (empty($data)) {
                             echo "<li><p>No posts found.</p></li>";
                         }
+
+                        echo $wpUrl;
                     ?>
                 </ul>
             </div>
