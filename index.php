@@ -22,7 +22,7 @@
         </div>
         <div class="row">
             <div class="col-6 l-post">
-                <form name="form" action="index.php" method="post">
+                <form name="form" action="" method="post">
                     <div class="input-group">
                         <span class="input-group-addon" id="basic-addon3">http://</span>
                         <input type="text" class="form-control" name="basic-url" id="basic-url" aria-describedby="basic-addon3">
@@ -38,35 +38,24 @@
                 <ul>
                     <?php
                         $url          =  'http://' . $_POST['basic-url'];
-                        $endpoint     =  '/wp-json/wp/v2/posts';
-                        $feed_endpoint = '/feed';
-                        $wpUrl        =  $url . $feed_endpoint;
+                        $version      =   get_meta_tags($url);
+                        $version      =   explode('-', $version['generator']);
+                        $version      =   explode(' ', $version[0]);
+                        $wpUrl        =  '';
 
-                        //Feed::getPosts('http://demo.wp-api.org/wp-json/wp/v2/posts');
-                        Feed::getRssFeed('http://demo.wp-api.org/feed');
+                        if ((float) $version[1] >= 4.4) {
+                            $wpUrl = $url . '/wp-json/wp/v2/posts';
 
-                        if (get_headers($wpUrl = $url . $endpoint)) {
-                            $wpUrl = $url . $endpoint;
-                            foreach ($result as $posts) {
-                                $content = $posts['content']['rendered'];
-                                $title   = $posts['title']['rendered'];
-                                echo "<li>Title: ";
-                                $post = print_r($title);
-                                echo "<p>Content: </p>";
-                                $post .= print_r($content);
-                                echo "</li>";
-                            }
-
-                            echo $post;
+                            Feed::getPosts($wpUrl);
                         }
-                        else if (get_headers($wpUrl = $url . $feed_endpoint)) {
+                        else if ((float) $version[1] < 4.4) {
+                            $wpUrl = $url . '/feed';
+
                             Feed::getRssFeed($wpUrl);
                         }
-                        else if (empty($data)) {
-                            echo "<li><p>No posts found.</p></li>";
+                        else {
+                            echo "<li><>No posts found.</li></p>";
                         }
-
-                        echo $wpUrl;
                     ?>
                 </ul>
             </div>

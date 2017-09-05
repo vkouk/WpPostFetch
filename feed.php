@@ -4,7 +4,7 @@ class Feed
 {
     public static function getPosts($feed_url) {
         $content = file_get_contents($feed_url);
-        $result  =  json_decode($content, true);
+        $result  = json_decode($content, true);
 
         foreach ($result as $posts) {
             $content = $posts['content']['rendered'];
@@ -15,8 +15,6 @@ class Feed
             $post .= print_r($content);
             echo "</li>";
         }
-
-        echo $post;
     }
 
     public static function getRSSFeed($feed_url) {
@@ -33,7 +31,5 @@ class Feed
             $y .= print_r((string)$entry->description);
             echo "</li></br>";
         }
-
-        echo $y;
     }
 }
