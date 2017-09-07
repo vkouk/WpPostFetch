@@ -22,7 +22,7 @@
         </div>
         <div class="row">
             <div class="col-6 l-post">
-                <form name="form" action="" method="post">
+                <form name="form" action="" method="get">
                     <div class="input-group">
                         <span class="input-group-addon" id="basic-addon3">http://</span>
                         <input type="text" class="form-control" name="basic-url" id="basic-url" aria-describedby="basic-addon3">
@@ -37,7 +37,7 @@
                 <h2>Recent posts</h2>
                 <ul>
                     <?php
-                        $url          =  'http://' . $_POST['basic-url'];
+                        $url          =  'http://' . $_GET['basic-url'];
                         $version      =   get_meta_tags($url);
                         $version      =   explode('-', $version['generator']);
                         $version      =   explode(' ', $version[0]);
