@@ -2,6 +2,20 @@
 
 class Feed
 {
+    public static function getRawData($feed_url) {
+        $content   = file_get_contents($feed_url);
+        $result    = json_decode($content, true);
+        //title, url, image, content(100 words)
+
+        foreach ($result as $posts) {
+            echo "<li>";
+            echo "<pre>";
+            echo 'Date: '. json_encode($posts['date']) .' 
+ <a href=' . json_encode($posts['link'], JSON_UNESCAPED_SLASHES) .'> '. json_encode($posts['title'], JSON_PRETTY_PRINT) .'</a>';
+            echo "</li>";
+        }
+    }
+
     public static function getPosts($feed_url) {
         $content = file_get_contents($feed_url);
         $result  = json_decode($content, true);
