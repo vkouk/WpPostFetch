@@ -53,9 +53,6 @@
 
                             Feed::getRssFeed($wpUrl);
                         }
-                        else {
-                            echo "<li><>No posts found.</li></p>";
-                        }
                     ?>
                 </ul>
             </div>
