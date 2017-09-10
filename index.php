@@ -14,42 +14,44 @@
     <link rel="stylesheet" type="text/css" href="style.css">
 </head>
 <body>
-<div class="row">
-    <div class="col-12 wp-posts">
-        <h2>Recent posts</h2>
-        <ul>
-            <div class="row">
-                <div class="col-6 l-post">
-                    <form name="form" action="" method="get">
-                        <div class="input-group">
-                            <span class="input-group-addon" id="basic-addon3">http://</span>
-                            <input type="text" class="form-control" name="basic-url" id="basic-url" aria-describedby="basic-addon3">
+    <div class="container">
+        <div class="row">
+            <div class="col-6 l-post">
+                <form name="form" action="" method="get">
+                    <div class="input-group">
+                        <span class="input-group-addon" id="basic-addon3">http://</span>
+                        <input type="text" class="form-control" name="basic-url" id="basic-url" aria-describedby="basic-addon3">
 
-                            <input type="submit" class="btn btn-outline-light" value="Submit">
-                        </div>
-                    </form>
-                </div>
+                        <input type="submit" class="btn btn-outline-light" value="Submit">
+                    </div>
+                </form>
             </div>
-            <?php
-                $url          =  'http://' . $_GET['basic-url'];
-                $version      =   get_meta_tags($url);
-                $version      =   explode('-', $version['generator']);
-                $version      =   explode(' ', $version[0]);
-                $wpUrl        =  '';
+        </div>
+        <div class="row">
+            <div class="col-12 wp-posts">
+                <h2>Recent posts</h2>
+                <ul>
+                    <?php
+                        $url          =  'http://' . $_GET['basic-url'];
+                        $version      =   get_meta_tags($url);
+                        $version      =   explode('-', $version['generator']);
+                        $version      =   explode(' ', $version[0]);
+                        $wpUrl        =  '';
 
-                if ((float) $version[1] >= 4.4) {
-                    $wpUrl = $url . '/wp-json/wp/v2/posts';
+                        if ((float) $version[1] >= 4.4) {
+                            $wpUrl = $url . '/wp-json/wp/v2/posts';
 
-                    Feed::getRawData($wpUrl);
-                }
-                else if ((float) $version[1] < 4.4) {
-                    $wpUrl = $url . '/feed';
+                            Feed::getRawData($wpUrl);
+                        }
+                        else if ((float) $version[1] < 4.4) {
+                            $wpUrl = $url . '/feed';
 
-                    Feed::getRssFeed($wpUrl);
-                }
-            ?>
-        </ul>
+                            Feed::getRssFeed($wpUrl);
+                        }
+                    ?>
+                </ul>
+            </div>
+        </div>
     </div>
-</div>
 </body>
 </html>

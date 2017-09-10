@@ -6,7 +6,6 @@ body {
     font-family: 'Roboto', sans-serif;
     font-weight: 300;
     margin: 0 auto;
-    font-size: 2em;
     position: relative;
     background-color: lightseagreen;
     font-size: 16px;
@@ -41,9 +40,9 @@ a:hover {
     margin: 45px auto;
 }
 
-.wp-posts h2, h3 {
+.wp-posts h2, h4 {
     text-decoration: underline;
-    padding-bottom: 10px;
+    padding-bottom: 15px;
 }
 
 .wp-posts ul {

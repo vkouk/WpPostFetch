@@ -14,9 +14,9 @@ class Feed
 
                 echo "<li>";
                 echo "<pre>";
-                echo '<h3>Date: '. $date .'</h3>
+                echo '<h4>Date: '. $date .'</h4>
         <p><a href=' . json_encode($posts['link'], JSON_UNESCAPED_SLASHES) .'> '. json_encode($posts['title'], JSON_PRETTY_PRINT) .'</a></p>
-               <h3>Content:</h3>' . $post .'';
+               <h4>Content:</h4>' . $post .'';
                 echo "</li>";
             }
         } else {
