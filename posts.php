@@ -46,12 +46,12 @@
                         if ((float) $version[1] >= 4.4) {
                             $wpUrl = $url . '/wp-json/wp/v2/posts';
 
-                            Feed::getPosts($wpUrl);
+                            Feed::getData($wpUrl);
                         }
                         else if ((float) $version[1] < 4.4) {
                             $wpUrl = $url . '/feed';
 
-                            Feed::getRssFeed($wpUrl);
+                            Feed::getRSSData($wpUrl);
                         }
                     ?>
                 </ul>
