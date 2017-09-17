@@ -24,8 +24,7 @@ class Feed
         $x = simplexml_load_string($content, null, LIBXML_NOCDATA);
 
         foreach($x->channel->item as $entry) {
-            $date = date('Y/m/d', strtotime((string)$entry->date));
-
+            $date = date('Y/m/d', strtotime((string)$entry->pubDate));
 
             echo "{<br><br>";
             echo "Date: ";
@@ -34,7 +33,7 @@ class Feed
             print_r((string)$entry->title);
             echo "<br> Content: ";
             print_r((string)$entry->description);
-            echo "}<br><br>";
+            echo "<br><br>}<br><br>";
         }
     }
 

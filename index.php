@@ -16,6 +16,8 @@
     $version      =   explode(' ', $version[0]);
     $wpUrl        =  '';
 
+    echo "If you would like to move on a newest version of service please click this " . '<a href="posts.php">link</a><br><br>';
+
     if (isset($_GET['url']) || empty($url)) {
         if ((float) $version[1] >= 4.4) {
             $wpUrl = $url . '/wp-json/wp/v2/posts';
