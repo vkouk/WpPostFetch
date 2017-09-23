@@ -15,7 +15,7 @@ class Feed
             echo 'Date: '. $date .'<br>
         <br><a href=' . json_encode($post['link'], JSON_UNESCAPED_SLASHES) .'> '. json_encode($post['title']['rendered'], JSON_PRETTY_PRINT) .'</a>
                <br>Content:' . $posts .'';
-            echo "}<br><br>";
+            echo "<br>}<br><br>";
         }
     }
 
