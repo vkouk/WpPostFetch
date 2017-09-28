@@ -2,6 +2,19 @@
 
 class Feed
 {
+    private static function fetchFeaturedImage($url, $f_id) {
+        $url = explode('posts', $url);
+        $url = $url[0] .'media/' . $f_id;
+        $content = file_get_contents($url);
+        $f_image = json_decode($content, true);
+
+        $f_link = explode('uploads', $f_image['guid']['rendered']);
+        $website_url = explode('wp-json', $url);
+        $f_link = $website_url[0] . 'uploads' . $f_link[1];
+
+        return '<img style="width:300px; height:300px;" src="'.$f_link.'" alt="'.$f_image['title']['rendered'].'"/>';
+    }
+
     public static function getDataAsJSON($feed_url) {
         $content   = file_get_contents($feed_url);
         $result    = json_decode($content, true);
@@ -11,9 +24,16 @@ class Feed
             $date = date('Y/m/d', strtotime($post['date']));
             $posts = implode(' ', array_slice(explode(' ', $post['content']['rendered']), 0, 50));
 
-            echo "{<br><br>";
-            echo 'Date: '. $date .'<br>
-        <br><a href=' . json_encode($post['link'], JSON_UNESCAPED_SLASHES) .'> '. json_encode($post['title']['rendered'], JSON_PRETTY_PRINT) .'</a>
+            if ($post['featured_media'] !== 0) {
+                $featured_image = 'Featured Image: '. self::fetchFeaturedImage($feed_url, $post['featured_media']);
+            } else {
+               echo "No featured image exists!";
+            }
+
+            echo "{<br>";
+            echo ''. $featured_image .'<br>
+            <br>Date: '. $date .'<br>
+        <br><a href=' . json_encode($post['link'], JSON_UNESCAPED_SLASHES) .'> '. json_encode($post['title']['rendered'], JSON_PRETTY_PRINT) .'</a><br>
                <br>Content:' . $posts .'';
             echo "<br>}<br><br>";
         }
