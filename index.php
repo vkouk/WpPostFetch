@@ -26,8 +26,7 @@
             if (isset($search)) {
                 $wpUrl .=  '?search=' . strtolower($_GET['search']);
                 Feed::getDataAsJSON($wpUrl);
-            }
-            else {
+            } else {
                 Feed::getDataAsJSON($wpUrl);
             }
         }

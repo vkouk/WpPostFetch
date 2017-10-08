@@ -60,6 +60,7 @@ class Feed
     public static function getData($feed_url) {
         $content = file_get_contents($feed_url);
         $result  = json_decode($content, true);
+        $result  = array_slice($result, 0 , 10);
 
         foreach ($result as $posts) {
             $content = $posts['content']['rendered'];

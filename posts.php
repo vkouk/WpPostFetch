@@ -21,11 +21,13 @@
             </div>
         </div>
         <div class="row">
-            <div class="col-6 l-post">
+            <div class="col-12 l-post">
                 <form name="form" action="" method="get">
                     <div class="input-group">
                         <span class="input-group-addon" id="basic-addon3">http://</span>
-                        <input type="text" class="form-control" name="basic-url" id="basic-url" aria-describedby="basic-addon3">
+                        <input type="text" class="form-control" name="basic-url" id="basic-url" aria-describedby="basic-addon3" value="<?php echo $_GET['basic-url'] ?>">
+                        <span class="input-group-addon" id="basic-addon3">Search:</span>
+                        <input type="text" class="form-control" name="search" id="search" aria-describedby="basic-addon3" value="<?php echo $_GET['search'] ?>">
 
                         <input type="submit" class="btn btn-outline-light" value="Submit">
                     </div>
@@ -38,20 +40,30 @@
                 <ul>
                     <?php
                         $url          =  'http://' . $_GET['basic-url'];
+                        $search       =   $url . $_GET['search'];
                         $version      =   get_meta_tags($url);
                         $version      =   explode('-', $version['generator']);
                         $version      =   explode(' ', $version[0]);
                         $wpUrl        =  '';
 
-                        if ((float) $version[1] >= 4.4) {
-                            $wpUrl = $url . '/wp-json/wp/v2/posts';
+                        if (isset($_GET['basic-url']) && !empty($_GET['basic-url'])) {
+                            if ((float) $version[1] >= 4.4) {
+                                $wpUrl = $url . '/wp-json/wp/v2/posts';
 
-                            Feed::getData($wpUrl);
-                        }
-                        else if ((float) $version[1] < 4.4) {
-                            $wpUrl = $url . '/feed';
+                                if (isset($search)) {
+                                    $wpUrl .= '?search=' . strtolower($_GET['search']);
+                                    Feed::getData($wpUrl);
+                                } else {
+                                    Feed::getData($wpUrl);
+                                }
+                            }
+                            else if ((float) $version[1] < 4.4) {
+                                $wpUrl = $url . '/feed';
 
-                            Feed::getRSSData($wpUrl);
+                                Feed::getRSSData($wpUrl);
+                            }
+                        } else {
+                            echo "No data found!";
                         }
                     ?>
                 </ul>
