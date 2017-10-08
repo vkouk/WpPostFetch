@@ -2,7 +2,7 @@
 
 class Feed
 {
-    private static function fetchFeaturedImage($url, $f_id) {
+    public static function fetchFeaturedImage($url, $f_id) {
         $url = explode('posts', $url);
         $url = $url[0] .'media/' . $f_id;
         $content = file_get_contents($url);

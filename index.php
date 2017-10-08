@@ -11,6 +11,7 @@
 <body>
 <?php
     $url          =  'http://' . $_GET['url'];
+    $search       =   $_GET['search'];
     $version      =   get_meta_tags($url);
     $version      =   explode('-', $version['generator']);
     $version      =   explode(' ', $version[0]);
@@ -22,7 +23,13 @@
         if ((float) $version[1] >= 4.4) {
             $wpUrl = $url . '/wp-json/wp/v2/posts';
 
-            Feed::getDataAsJSON($wpUrl);
+            if (isset($search)) {
+                $wpUrl .=  '?search=' . strtolower($_GET['search']);
+                Feed::getDataAsJSON($wpUrl);
+            }
+            else {
+                Feed::getDataAsJSON($wpUrl);
+            }
         }
         else if ((float) $version[1] < 4.4) {
             $wpUrl = $url . '/feed';
