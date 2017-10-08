@@ -40,7 +40,7 @@
                 <ul>
                     <?php
                         $url          =  'http://' . $_GET['basic-url'];
-                        $search       =   $url . $_GET['search'];
+                        $search       =   $_GET['search'];
                         $version      =   get_meta_tags($url);
                         $version      =   explode('-', $version['generator']);
                         $version      =   explode(' ', $version[0]);
